@@ -1,0 +1,640 @@
+	Containerization :::: Docker 
+
+		https://hub.docker.com/
+
+	Docker & Kubernetes **********
+
+	Docker --> It is a Containerization Tool :::
+
+	Used to Create Docker Images and Containers --->
+
+
+	Virtual Machines ???
+
+	What is the Need for VM ???
+
+		To scale h/w s/w update ???
+
+
+	To work on more than one OS.
+
+		
+
+		Hypervisor		
+
+
+
+
+
+
+	Virtual Machines ::::
+
+	- VMs are used to run multiple OS.
+	- It is Hardware level Virtualization.	
+	- It is used to run OS.
+	- It required huge space
+	- Consume time to start up.
+
+
+
+In any cloud platform :::
+
+Regions --> 
+	Availability Zones
+	  Data Centers(Servers)
+
+ap-south1a --> Virtual Machines..
+
+
+	Virtual Machines ::::
+
+	- VMs are used to run multiple OS.
+	- It is Hardware level Virtualization.	
+	- It is used to run OS.
+	- It required huge space
+	- Consume time to start up.
+	- VM will continue to run even if the application is completed.
+
+	Containers ::::
+
+	- Containers are not to run operating systems.
+	- Containers are OS level Virtualization
+	- Containers are used to run Application, and NOT Operating System
+	- It doesn't require much space, as it is jus used to run applications.
+	- It is faster to start up.
+	- Containers will exit as soon the application is completed
+
+
+
+##############
+26th May 2023
+##############	
+
+	Virtual Machine 	(vs)		Containers.
+
+	Container ::::
+
+	1. Infra-Structure Perspective :::
+
+		Creating VMs ::
+
+		Jenkins_Master	(VM)
+			Slave1	(VM)	--> Is used to build your appln. Java
+			Slave2	(VM)	--> Is used to build your appln. Python
+			Slave3	(VM)	--> Is used to build your appln. .Net
+			Slave4	(VM)	--> Is used to build your appln. NodeJS
+			Slave5 	(VM)	--> Is used to build your appln. Angular
+			Slave1000
+
+		Jenkins_Master	(VM)
+			Slave1 	(VM) --> Install Container Engine - Container1,2,3,4,5,6,.....,1000
+				
+
+
+	2. Development & Deployment Perspective :::
+
+		Java_Application :: 1000 Microservices
+
+		src_code --> built and artifacts(testapp.war) will be created. jdk11 & maven -->	
+		Tomcat server --> jdk11 & tomcat8.5
+		
+		Package the artifacts along with its dependencies(testapp.war,jdk11 & tomcat8.5) ==> AppImage1
+
+		Package are now refered as Images:
+
+		Images are the static component or file that define the application & its' dependencies.
+
+		Containers are the executable units of Images.			
+	
+		Container Images :::: 
+
+		promote the appln. (testapp.war)
+
+		QA (VM)	(testapp.war) --> These tools shd be installed : jdk8 & tomcat10	AppImage1 - executed as containers
+
+		UAT	(testapp.war) --> These tools shd be installed : jdk11 & tomcat8.5	AppImage1
+
+		PROD	(testapp.war) --> These tools shd be installed : jdk11 & tomcat8.5	AppImage1
+
+
+			testapp.war_v1.0 AppImage1 --> testapp.war_v1.1 AppImage2
+
+	DevOps Perpective :::
+
+
+		Jenkins Pipeline :::
+			SCM_Checkout
+			Build
+			Build docker Image
+			Publish the Image to Container Registry
+			Deploy Application Container in Target Server
+
+
+	Terminologies ::::
+
+		1. Docker Daemon/Engine/Host	
+			=> Used to Create Docker Images & Containers
+		2. Docker Image			
+			=> Are Static file that contain the definition of Application and dependencies. It composed of various layers.	
+		3. Docker Container
+			=> It is an instance of Image/Excutable unit of Images. Composed of Application and it's Dependencies.
+		4. Docker Registry 
+			=> Is consists of Docker Repositories used to store and Manage the docker Images.
+		5. Docker CLI 
+			=> Is a command line utility used to interact with Docker Daemon.
+			Docker Misc. Commands.
+
+
+	Installation of Docker !!!!
+
+		Linux/Window/Mac
+
+		https://docs.docker.com/engine/install/
+
+		IN RHEL/CENTOS/Amazon Linux 2 AMI(previous version)
+		
+			yum install docker -y
+
+		Lets Install Docker in AWS Instance - Ubuntu!!!
+
+			curl -fsSL https://get.docker.com -o get-docker.sh
+			sudo sh get-docker.sh
+
+		docker --version
+		systemctl status docker
+		systemctl start docker
+		systemctl enable docker
+
+   47  curl -fsSL https://get.docker.com -o get-docker.sh
+   48  sudo sh get-docker.sh
+   49  docker --version
+   50  docker version
+   51  service docker status
+   52  systemctl status docker
+   53  systemctl enable docker
+   54  history
+
+
+		Working with docker cli commands:::
+
+		docker run --> used to run the container.
+
+			--> Interactive Mode
+				docker run -it centos
+			--> Background/Detached Mode
+				docker run -d centos
+			--> Foreground/Attached Mode
+				docker run centos
+		
+
+
+   55  docker images
+   56  docker ps
+   57  docker ps -a
+   58  clear
+   59  docker pull centos
+   60  docker images
+   61  docker ps
+   62  docker ps -a
+   63  docker run centos
+   64  docker ps
+   65  docker ps -a
+   66  docker images
+   67  docker run debian
+   68  docker ps -a
+   69  docker run -it centos
+   70  docker ps -a
+   71  docker run -it centos
+   72  docker run centos
+   73  docker run centos sleep 20
+   74  docker run -d centos sleep 20
+   75  history
+   44  docker ps
+   45  docker ps -a
+   46  docker images
+   47  docker rmi 1ac99357ef21
+   48  docker rm 4dc1b9062403
+   49  docker rmi 1ac99357ef21
+   50  docker images
+   51  docker ps -a
+   52  docker rm 99ec7f b330ad2
+   53  docker ps -a
+   54  docker inspect dfcdcc467ec2
+   55  docker ps -a
+   56  docker images
+   57  docker inspect 5d0da3dc9764
+   58  docker images
+   59  docker history 5d0da3dc9764
+
+
+
+
+
+##############
+29th May 2023
+##############
+
+	
+
+	Docker Commands :::
+
+		- To login to running container.
+
+		docker exec -it <Container_id>
+		docker exec -it 7d4b5a2e61aa bash
+
+		docker run (vs) exec
+
+		docker run -it <image_id>
+		docker run -it centos 
+
+		Port Mapping / Binding :::
+
+	Eg.. Run an application server inside the container.
+
+	Port Mapping / Port Binding is used to map the Container volume to the corresponding host volume
+
+	docker run -it -p 8085:8080 tomcat:8.5
+
+	port mapping ==> -p <host_port>:<container_port>
+
+	docker run -it -p 8086:80 nginx
+
+	<public_ip>:8085
+
+
+
+	Build Container Images ::::
+
+		Setup a VM for my Java Maven webapp Build.
+
+			OS,jdk,maven,git
+
+		Setup a Container Image for my Java Maven webapp Build.
+			OSImage,jdk,maven,git
+
+	In order to build the container image ::
+
+	Should start with the Base Image :::
+
+
+	These are commands used to create/build new container Images :	
+
+		Docker Commit 
+		Docker Build 
+
+  106  clear
+  107  docker ps -a
+  108  docker run centos sleep 100
+  109  docker ps
+  110  clear
+  111  docker run -it -p 8085:8080 tomcat:8.5
+  112  clear
+  113  docker ps
+  114  docker exec -it f3ab1490f3bf bash
+  115  clear
+  116  docker ps
+  117  docker ps -a
+  118  clear
+  119  docker ps -a
+  120  docker run -it debian bash
+  121  docker ps -a
+  122  docker commit ac3d7157d154 loksaieta/mvnbuild:v1.0
+  123  docker images
+  124  docker run -it loksaieta/mvnbuild:v1.0
+  125  history
+			
+	docker commit ---> 
+
+  120  docker run -it debian bash
+  121  docker ps -a
+  122  docker commit ac3d7157d154 loksaieta/mvnbuild:v1.0
+  123  docker images
+  124  docker run -it loksaieta/mvnbuild:v1.0
+
+
+	docker build ---->
+
+	Dockerfile
+
+FROM debian
+RUN apt-get update
+RUN apt-get install git -y
+RUN apt-get openjdk-11-jre -y
+RUN apt-get install maven -y
+
+	
+	Docker commit (vs) build ::::
+
+		docker commit ac3d7157d154 loksaieta/mvnbuild:v1.0
+		docker commit <container_id> loksaieta/mvnbuild:v1.0
+	 	docker build -t loksaieta/mvnbuild:v0 .
+
+
+How to Publish the images to Docker Hub.
+
+	Login to docker hub using dockercli
+		 username & Access Token
+			
+dckr_pat_LFGTymNNKdskIvIBctn23qObPOQ
+
+  127  mkdir Docker-Content
+  128  cd Docker-Content/
+  129  clear
+  130  vi Dockerfile
+  131  vi Dockerfile
+
+FROM debian
+RUN apt-get update
+RUN apt-get install git -y
+RUN apt-get openjdk-11-jre -y
+RUN apt-get install maven -y
+
+  132  docker build -t loksaieta/mvnbuild:v0 .
+  133  docker build -t loksaieta/mvnbuild:v0 .
+  134  docker images
+  135  docker history loksaieta/mvnbuild:v0
+  136  docker run -it loksaieta/mvnbuild:v0
+  137  clear
+  138  docker images
+  139  docker login -u loksaieta
+  140  docker push loksaieta/mvnbuild:v1.0
+  141  history
+
+
+Eg.:
+
+
+
+	Create a Image for application build and test using tomcat 
+
+	ubuntu
+	install git, jdk, mvn, tomcat 
+
+Summary ::
+
+	docker exec 
+	docker container port mapping
+	docker image builds... commit & build cmds
+	create Dockerfile
+	publish images to dockerhub
+
+
+
+
+##############
+30th May 2023
+##############
+
+	Docker build 
+
+	Dockerfile :::::
+
+	
+FROM debian
+RUN apt-get update
+RUN apt-get install git -y
+RUN apt-get openjdk-11-jre -y
+RUN apt-get install maven -y
+	
+	Best Practise for writting Dockerfile :::
+		Reduce the no. of Layers in Docker Image.
+
+vi Dockerfile
+
+FROM debian
+RUN apt-get update -y && apt-get install git -y && apt-get openjdk-11-jre -y && apt-get install maven -y
+
+
+
+Docker Build Workflow ::
+
+	Create Dockerfile 	--->	Docker Build		--->	Docker Image	---> 	Publish Dockerhub	--->	Docker Container
+
+
+Dockerfile Instructions ::::
+
+FROM 	:	--> Used to specify the Base Image
+
+RUN	:	--> Used to run package managers to manage(install/remove/update) the packages within the container
+
+COPY	:	--> Used to copy the files from the host machine into container volume/Dir.
+			Eg.: Jenkins_Slave : --> build appln. artifacts	--> target/javaapp.war
+				Docker_Engine --> build Docker tomcat image using artifacts
+							tomcat/webapps/javaapp.war
+				Dir ==> collection of dir/files
+
+CP	:	--> Used to copy the files within the container volumes/Dir.
+			Eg.: tomcat/webapps-dest/*.* to tomcat/webapps/
+				CP tomcat/webapps-dest/*.* tomcat/webapps/
+
+WORKDIR	:	--> Used to Identify te current working Directory of host machine.
+
+			FROM tomcat:8.0
+			WORKDIR workspace/target/
+			COPY javaapp.war tomcat/webapps/
+			EXPOSE 8080
+			CMD "/bin/bash"
+
+ENV	:	--> Used to define Environment Variables
+
+EXPOSE	:	--> Used to Expose Container Port.
+
+CMD	:	--> Used to specific the default/start-up command to run the container. Allows users to pass the any command at run time.
+			Eg.: docker run -it centos sleep 60
+
+				FROM tomcat:8.0
+				WORKDIR workspace/target/
+				COPY javaapp.war tomcat/webapps/
+				EXPOSE 8080
+				CMD "echo Hello"
+
+				docker run -it tempimg2 sleep 60
+
+				docker run -it tempimg2 sleep 100
+
+				docker run -it tempimg2 echo Hello 
+
+				docker run -it tempimg2 sleep 80
+
+				docker run -it tempimg2 sleep 60
+
+ENTRYPOINT 	--> Used to specific the default/start-up command to run the container. The command cannot be modified at run time.
+			Eg.: 
+				FROM tomcat:8.0
+				WORKDIR workspace/target/
+				COPY javaapp.war tomcat/webapps/
+				EXPOSE 8080
+				ENTRYPOINT "echo Hello"
+
+				docker run -it tempimg1 sleep 60
+
+
+
+			Eg.: 
+				FROM debian
+				RUN apt-get update
+				RUN apt-get install git -y
+				RUN apt-get openjdk-11-jre -y
+				RUN apt-get install maven -y
+				CMD "sleep 50"
+
+				docker run -it tempimg3 sleep 100
+				docker run -it tempimg3 sleep 20
+				docker run -it tempimg3 sleeep 500
+
+			Eg.: 
+				FROM debian
+				RUN apt-get update
+				RUN apt-get install git -y
+				RUN apt-get openjdk-11-jre -y
+				RUN apt-get install maven -y
+				ENTRYPOINT "sleep "
+				CMD "50"
+
+				docker run -it tempimg3 500
+
+				Eg.: docker run -it tempimg3 sleep 500
+
+
+			Eg.: 
+				FROM debian
+				RUN apt-get update
+				RUN apt-get install git -y
+				RUN apt-get openjdk-11-jre -y
+				RUN apt-get install maven -y
+				ENTRYPOINT "mkdir "
+				CMD "/dummy"
+
+				Eg.: 
+					docker run -it tempimg3				==>	mkdir /dummy
+					docker run -it tempimg3 /sampledir1		==>	mkdir /sampledir1
+
+
+
+Container Volumes ::::
+
+	Host Machine ==> mkdir /sampledir1/file1.txt
+
+
+	Container    ==> docker run -it centos bash 
+				$ mkdir /sampledir1/file1.txt
+				$ exit
+				
+			docker run -it centos bash 
+
+
+			docker run -it webappsignin bash 
+
+	Applications :::
+
+		Stateless Application
+			
+		
+		Stateful Application
+			
+			Micro-Service :::
+				3-tier Architecture :::	signup service
+					
+					Front-End (UI)		Container1
+					Application Logic 	Container2	signup.war ==> produce some data - log/report/	==> moved to host vol
+					Back-End (Dbase)	Container3
+		
+
+
+	Persistant Volume :::
+
+		Docker Volume Command :::
+
+		Docker Volume :::
+	
+		docker volume 
+
+  175  clear
+  176  docker ps
+  177  docker ps -a
+  178  clear
+  179  docker ps -a
+  180  docker volume list
+  181  docker volume create sa17vol1
+  182  docker volume list
+  183  docker volume inspect sa17vol1
+  184  cd /var/lib
+  185  cd docker/
+  186  ls
+  187  pwd
+  188  cd volumes/
+  189  ls
+  190  cd sa17vol1/
+  191  ls
+  192  cd _data/
+  193  ls
+  194  pwd
+  195  docker volume create sa17vol1
+  196  docker volume create sa17vol2
+  197  docker volume create sa17vol3
+  198  docker volume list
+  199  cd ..
+  200  cd .
+  201  ll
+  202  cd ..
+  203  ls
+  204  pwd
+  205  docker volume inspect sa17vol2
+  206  docker run -it centos bash
+  207  docker run -it --mount source=sa17vol1,destination=/sa17vol1 centos bash
+  208  cd sa17vol1
+  209  ls
+  210  cd _data/
+  211  ls
+  212  cat file1fromcontainer.txt
+  213  ls
+  214  echo "rec from host Machine" >> hostfile1.txt
+  215  ls
+  216  echo "rec from host Machine" >> hostfile1.txt
+  217  ls
+  218  cat hostfile1.txt
+  219  docker run -it --mount source=sa17vol1,destination=/sa17vol1 centos bash
+  220  history
+
+
+
+	webApplication:
+
+		create the user login_history 
+			date&time.txt  in container
+
+
+
+Docker Compose ::::
+
+	Docker Compose is Docker plugin. It is used to run multiple Containers as single service.
+			
+			Micro-Service :::
+				3-tier Architecture :::	signup service
+					
+					Front-End (UI)		appimg1-Container1
+					Application Logic 	appimg2-Container2
+					Back-End (Dbase)	appimg3-Container3	
+
+			docker run 
+
+		Docker Compose :: 
+
+		Installation :
+			https://docs.docker.com/compose/install/linux/
+ 
+			docker compose version
+			docker compose up
+			docker compose down
+
+		yaml script to define multiple containers.
+
+Summary ::
+		Docker Build 
+		Dockerfile
+		Dockerfile Instructions
+		Docker Volume
+		Started with Docker Compose.
+
+
